@@ -298,12 +298,6 @@ const ChangeScreenStyles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 5,
   },
-  changeContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginVertical: 20,
-  },
   resetButton: {
     ...CommonStyles.button,
     backgroundColor: '#dc3545',

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { loadWalletData, saveWalletData } from '../components/DataStorage';
-import DenominationItem, { denominationImages } from '../components/DenominationVisuals';
-import Card from '../components/Card';
+import DenominationItem, { denominationsData } from '../components/DenominationVisuals';
 import Button from '../components/Button';
 import { CommonStyles, ChangeScreenStyles } from '../styles/AllStyles';
 
@@ -86,10 +85,10 @@ export function ChangeScreen({ route, navigation }) {
     <View style={CommonStyles.container}>
       <Text style={CommonStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
 
-      <View style={ChangeScreenStyles.changeContainer}>
-        {Object.keys(wallet).map((denomination) => (
-          <TouchableOpacity key={denomination} onPress={() => handleDenominationPress(denomination)}>
-            <DenominationItem denomination={denomination} count={changeSelection[denomination] || 0} />
+      <View style={ChangeScreenStyles.denominationContainer}>
+        {denominationsData.map((denomination) => (
+          <TouchableOpacity key={denomination.value} onPress={() => handleDenominationPress(denomination.value)}>
+            <DenominationItem denomination={denomination} count={changeSelection[denomination.value] || 0} />
           </TouchableOpacity>
         ))}
       </View>

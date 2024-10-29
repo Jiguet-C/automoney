@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { loadWalletData, saveWalletData } from '../components/DataStorage';
 import VoiceInput from '../components/VoiceInput';
 import { calculatePayment } from '../components/PaymentCalculator';
-import { denominationImages } from '../components/DenominationVisuals';
+import { denominationsData } from '../components/DenominationVisuals';
 import Button from '../components/Button';
 import { CommonStyles, PayScreenStyles } from '../styles/AllStyles';
 
@@ -115,6 +115,8 @@ export function PayScreen({ navigation }) {
     : null;
   console.log("Current denomination:", currentDenomination);
 
+  const currentDenominationData = denominationsData.find(item => item.value === currentDenomination);
+
   return (
     <KeyboardAvoidingView
       style={PayScreenStyles.container}
@@ -123,16 +125,16 @@ export function PayScreen({ navigation }) {
       {solution ? (
         <View style={CommonStyles.container}>
           <Text style={PayScreenStyles.label}>Montant à payer : {(remainingAmount / 100).toFixed(2)} €</Text>
-          {currentDenomination && (
+          {currentDenomination && currentDenominationData && (
             <View style={PayScreenStyles.denominationContainer}>
               <Image
-                source={denominationImages[currentDenomination]}
+                source={currentDenominationData.image}
                 style={PayScreenStyles.denominationImage}
                 onError={() => console.error(`Image non trouvée pour la dénomination: ${currentDenomination}`)}
               />
-              {denominationImages[currentDenomination] ? null : (
-                <Text style={PayScreenStyles.errorText}>Image introuvable pour {currentDenomination} €</Text>
-              )}
+              <Text style={PayScreenStyles.text}>
+                {currentDenominationCount} × {currentDenomination} €
+              </Text>
             </View>
           )}
           <View style={PayScreenStyles.buttonContainer}>
@@ -148,7 +150,7 @@ export function PayScreen({ navigation }) {
           <VoiceInput
             value={amountToPay}
             onChangeText={handleVoiceInput}
-            placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
+            placeholder="Appuyer sur l'icône pour la reconnaissance vocale"
           />
           <Button title="Calculer" onPress={calculatePaymentHandler} />
           {error && <Text style={PayScreenStyles.errorText}>{error}</Text>}
