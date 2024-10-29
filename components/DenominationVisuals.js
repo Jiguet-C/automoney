@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import styles from '../styles/WalletScreenStyles';
+import { WalletScreenStyles } from '../styles/AllStyles';
 
 // Images des dénominations
 const denominationImages = {
@@ -22,9 +22,9 @@ const denominationImages = {
 const denominations = ['50.00', '20.00', '10.00', '5.00', '2.00', '1.00', '0.50', '0.20', '0.10', '0.05', '0.02', '0.01'];
 
 const DenominationItem = ({ denomination, count }) => (
-  <View style={styles.itemContainer}>
-    <Image source={denominationImages[denomination]} style={styles.image} />
-    <Text style={styles.text}>
+  <View style={WalletScreenStyles.itemContainer}>
+    <Image source={denominationImages[denomination]} style={WalletScreenStyles.image} />
+    <Text style={WalletScreenStyles.text}>
       {count} × {denomination} €
     </Text>
   </View>

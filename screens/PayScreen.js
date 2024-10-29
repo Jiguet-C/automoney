@@ -5,9 +5,10 @@ import { loadWalletData, saveWalletData } from '../components/DataStorage';
 import VoiceInput from '../components/VoiceInput';
 import { calculatePayment } from '../components/PaymentCalculator';
 import { denominationImages } from '../components/DenominationVisuals';
-import styles from '../styles/PayScreenStyles';
+import Button from '../components/Button';
+import { CommonStyles, PayScreenStyles } from '../styles/AllStyles';
 
-export default function PayScreen({ navigation }) {
+export function PayScreen({ navigation }) {
   const [amountToPay, setAmountToPay] = useState('');
   const [wallet, setWallet] = useState({});
   const [solution, setSolution] = useState(null);
@@ -116,48 +117,44 @@ export default function PayScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={PayScreenStyles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       {solution ? (
-        <View style={styles.solutionContainer}>
-          <Text style={styles.label}>Montant à payer : {(remainingAmount / 100).toFixed(2)} €</Text>
+        <View style={CommonStyles.container}>
+          <Text style={PayScreenStyles.label}>Montant à payer : {(remainingAmount / 100).toFixed(2)} €</Text>
           {currentDenomination && (
-            <View style={styles.denominationContainer}>
+            <View style={PayScreenStyles.denominationContainer}>
               <Image
                 source={denominationImages[currentDenomination]}
-                style={styles.denominationImage}
+                style={PayScreenStyles.denominationImage}
                 onError={() => console.error(`Image non trouvée pour la dénomination: ${currentDenomination}`)}
               />
               {denominationImages[currentDenomination] ? null : (
-                <Text style={styles.errorText}>Image introuvable pour {currentDenomination} €</Text>
+                <Text style={PayScreenStyles.errorText}>Image introuvable pour {currentDenomination} €</Text>
               )}
             </View>
           )}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.backButton]} onPress={() => navigation.goBack()}>
-              <Text style={styles.buttonText}>Retour</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.validateButton]} onPress={validatePayment}>
-              <Text style={styles.buttonText}>Valider</Text>
-            </TouchableOpacity>
+          <View style={PayScreenStyles.buttonContainer}>
+            <Button title="Retour" onPress={() => navigation.goBack()} />
+            <Button title="Valider" onPress={validatePayment} />
           </View>
-          {error && <Text style={styles.errorText}>{error}</Text>}
+          {error && <Text style={PayScreenStyles.errorText}>{error}</Text>}
         </View>
       ) : (
         <View>
-          <Text style={styles.label}>Montant à payer (en €) :</Text>
+          <Text style={PayScreenStyles.label}>Montant à payer (en €) :</Text>
           <VoiceInput
             value={amountToPay}
             onChangeText={handleVoiceInput}
             placeholder="Entrez le montant à payer"
           />
-          <TouchableOpacity style={styles.calculateButton} onPress={calculatePaymentHandler}>
-            <Text style={styles.buttonText}>Calculer</Text>
-          </TouchableOpacity>
-          {error && <Text style={styles.errorText}>{error}</Text>}
+          <Button title="Calculer" onPress={calculatePaymentHandler} />
+          {error && <Text style={PayScreenStyles.errorText}>{error}</Text>}
         </View>
       )}
     </KeyboardAvoidingView>
   );
-}
+};
+
+export default PayScreen;

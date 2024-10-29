@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import extractNumbers from './VoiceRecognition';
-import styles from '../styles/VoiceInputStyles';
+import { VoiceInputStyles } from '../styles/AllStyles';
 
 const VoiceInput = ({ value, onChangeText, placeholder }) => {
   const [keyboardType, setKeyboardType] = useState('numeric');
@@ -32,16 +32,16 @@ const VoiceInput = ({ value, onChangeText, placeholder }) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={VoiceInputStyles.inputContainer}>
       <TextInput
-        style={styles.input}
+        style={VoiceInputStyles.input}
         keyboardType={keyboardType}
         value={value}
         onChangeText={handleTextChange} // Utiliser la nouvelle fonction
         placeholder={placeholder}
         placeholderTextColor='gray'
       />
-      <TouchableOpacity style={styles.iconContainer} onPress={toggleKeyboardType}>
+      <TouchableOpacity style={VoiceInputStyles.iconContainer} onPress={toggleKeyboardType}>
         <MaterialIcons
           name={isMicroActive ? 'mic-off' : 'mic'}
           size={24}

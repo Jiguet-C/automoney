@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { loadWalletData, saveWalletData } from '../components/DataStorage';
 import { denominationImages } from '../components/DenominationVisuals';
-import styles from '../styles/ChangeScreenStyles';
+import Card from '../components/Card';
+import Button from '../components/Button';
+import { CommonStyles, ChangeScreenStyles } from '../styles/AllStyles';
 
-export default function ChangeScreen({ route, navigation }) {
+export function ChangeScreen({ route, navigation }) {
   const [remainingChange, setRemainingChange] = useState(route.params.changeAmount);
   const [changeSelection, setChangeSelection] = useState({});
   const [wallet, setWallet] = useState({});
@@ -81,26 +83,31 @@ export default function ChangeScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
-      <View style={styles.changeContainer}>
-        {Object.keys(wallet).map((denomination) => (
-          <TouchableOpacity key={denomination} onPress={() => handleDenominationPress(denomination)}>
-            <Image source={denominationImages[denomination]} style={styles.denominationImage} />
-            <Text style={styles.denominationText}>
-              {denomination} € : {changeSelection[denomination] || 0}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+    <View style={CommonStyles.container}>
+      <Card>
+        <Text style={CommonStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
+      </Card>
+
+      <Card>
+        <View style={ChangeScreenStyles.changeContainer}>
+          {Object.keys(wallet).map((denomination) => (
+            <TouchableOpacity key={denomination} onPress={() => handleDenominationPress(denomination)}>
+              <Image source={denominationImages[denomination]} style={ChangeScreenStyles.denominationImage} />
+              <Text style={ChangeScreenStyles.denominationText}>
+                {denomination} € : {changeSelection[denomination] || 0}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </Card>
+
       {remainingChange === 0 && (
-        <TouchableOpacity style={styles.validateButton} onPress={handleValidation}>
-          <Text style={styles.buttonText}>Valider</Text>
-        </TouchableOpacity>
+        <Button title="Valider" onPress={handleValidation} />
       )}
-      <TouchableOpacity style={styles.resetButton} onPress={resetSelections}>
-        <Text style={styles.buttonText}>Réinitialiser</Text>
-      </TouchableOpacity>
+
+      <Button title="Réinitialiser" onPress={resetSelections} />
     </View>
   );
-}
+};
+
+export default ChangeScreen;

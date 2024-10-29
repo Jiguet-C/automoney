@@ -4,9 +4,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { saveWalletData, loadWalletData } from '../components/DataStorage';
 import DenominationItem, { denominations } from '../components/DenominationVisuals';
 import VoiceInput from '../components/VoiceInput';
-import styles from '../styles/WalletScreenStyles';
+import { CommonStyles, WalletScreenStyles } from '../styles/AllStyles';
+import Button from '../components/Button';
 
-export default function WalletScreen() {
+export function WalletScreen() {
   const [wallet, setWallet] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDenomination, setSelectedDenomination] = useState(null);
@@ -71,25 +72,21 @@ export default function WalletScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Mon porte-monnaie</Text>
-        <Text style={styles.totalAmount}>
+    <View style={CommonStyles.container}>
+      <Text style={WalletScreenStyles.totalText}>Mon porte-monnaie</Text>
+        <Text style={WalletScreenStyles.totalAmount}>
           {(Object.keys(wallet).reduce((acc, key) => acc + (wallet[key] || 0) * parseFloat(key), 0)).toFixed(2)} €
-        </Text>
-      </View>
+      </Text>
 
       <FlatList
         data={denominations.map((denomination) => ({ denomination }))}
         renderItem={renderWalletItem}
         keyExtractor={(item) => item.denomination.toString()}
         numColumns={3}
-        contentContainerStyle={styles.walletContainer}
+        contentContainerStyle={WalletScreenStyles.walletContainer}
       />
 
-      <TouchableOpacity style={styles.resetButton} onPress={resetWallet}>
-        <Text style={styles.resetButtonText}>Réinitialiser le portefeuille</Text>
-      </TouchableOpacity>
+      <Button title="Réinitialiser le portefeuille" onPress={resetWallet} />
 
       <Modal
         animationType="slide"
@@ -98,26 +95,24 @@ export default function WalletScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <KeyboardAvoidingView
-          style={styles.modalContainer}
+          style={WalletScreenStyles.modalContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>Modifier {selectedDenomination} €</Text>
+          <View style={WalletScreenStyles.modalView}>
+            <Text style={WalletScreenStyles.modalTitle}>Modifier {selectedDenomination} €</Text>
             <DenominationItem denomination={selectedDenomination} count={newAmount || 0} />
             <VoiceInput
               value={newAmount}
               onChangeText={setNewAmount}
               placeholder={`Entrez le montant pour ${selectedDenomination} €`}
             />
-            <TouchableOpacity style={styles.saveButton} onPress={saveAmount}>
-              <Text style={styles.saveButtonText}>Enregistrer</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={styles.closeButtonText}>Fermer</Text>
-            </TouchableOpacity>
+            <Button title="Enregistrer" onPress={saveAmount} />
+            <Button title="Fermer" onPress={() => setModalVisible(false)} />
           </View>
         </KeyboardAvoidingView>
       </Modal>
     </View>
   );
-}
+};
+
+export default WalletScreen;

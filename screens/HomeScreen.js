@@ -3,7 +3,10 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { loadWalletData, calculateTotal } from '../components/DataStorage';
 import BudgetGauge from '../components/BudgetGauge';
-import styles from '../styles/HomeScreenStyles';
+import WalletSummary from '../components/WalletSummary';
+import Card from '../components/Card';
+import Button from '../components/Button';
+import { CommonStyles, HomeScreenStyles } from '../styles/AllStyles';
 
 const HomeScreen = ({ navigation }) => {
   const [total, setTotal] = useState(0);
@@ -21,23 +24,19 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <BudgetGauge walletTotal={total} />
+    <View style={CommonStyles.container}>
+      <Card>
+        <BudgetGauge walletTotal={total} />
+      </Card>
 
-      <TouchableOpacity
-        style={styles.walletButton}
-        onPress={() => navigation.navigate('Wallet')}
-      >
-        <Text style={styles.buttonText}>Mon porte-monnaie</Text>
-        <Text style={styles.amountText}>{total.toFixed(2)} €</Text>
-      </TouchableOpacity>
+      <Card>
+        <Button title="Mon porte-monnaie" total={total} onPress={() => navigation.navigate('Wallet')} />
+        <WalletSummary total={total} />
+      </Card>
 
-      <TouchableOpacity
-        style={styles.payButton}
-        onPress={() => navigation.navigate('Pay')}
-      >
-        <Text style={styles.buttonText}>Payer</Text>
-      </TouchableOpacity>
+      <Card>
+        <Button title="Payer" onPress={() => navigation.navigate('Pay')} />
+      </Card>
     </View>
   );
 };

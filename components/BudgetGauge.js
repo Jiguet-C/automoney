@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import Svg, { Path, Line, Circle } from 'react-native-svg';
-import { loadBudget, saveBudget } from './DataStorage'; // Correction des imports
-import styles from '../styles/BudgetGaugeStyles';
+import { loadBudget, saveBudget } from './DataStorage';
+import { CommonStyles, BudgetGaugeStyles } from '../styles/AllStyles';
 import VoiceInput from './VoiceInput';
+import Button from '../components/Button';
 
 const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +46,7 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={BudgetGaugeStyles.container}>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <Svg width="200" height="100" viewBox="0 0 200 100">
           <Path d="M 100 100 L 0 100 A 100 100 0 0 1 50 13 Z" fill="red" />
@@ -57,13 +58,17 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
       </TouchableOpacity>
       <Text>Mon budget : {budget.toFixed(2)} €</Text>
 
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
         <KeyboardAvoidingView
-          style={styles.modalContainer}
+          style={BudgetGaugeStyles.modalContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>Entrez votre budget</Text>
+          <View style={BudgetGaugeStyles.modalView}>
+            <Text style={BudgetGaugeStyles.modalTitle}>Entrez votre budget</Text>
             <VoiceInput
               value={inputValue}
               onChangeText={setInputValue}
@@ -71,12 +76,8 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
               keyboardType="numeric"
               placeholder="Budget en €"
             />
-            <TouchableOpacity onPress={() => saveBudgetData(parseFloat(inputValue))}>
-              <Text style={styles.button}>Sauvegarder</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={styles.button}>Annuler</Text>
-            </TouchableOpacity>
+            <Button title="Enregistrer" onPress={() => saveBudgetData(parseFloat(inputValue))} />
+            <Button title="Fermer" onPress={() => setModalVisible(false)} />
           </View>
         </KeyboardAvoidingView>
       </Modal>
