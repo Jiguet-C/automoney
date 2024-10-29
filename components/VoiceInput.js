@@ -37,7 +37,7 @@ const VoiceInput = ({ value, onChangeText, placeholder }) => {
         style={VoiceInputStyles.input}
         keyboardType={keyboardType}
         value={value}
-        onChangeText={handleTextChange} // Utiliser la nouvelle fonction
+        onChangeText={handleTextChange}
         placeholder={placeholder}
         placeholderTextColor='gray'
       />
@@ -45,7 +45,7 @@ const VoiceInput = ({ value, onChangeText, placeholder }) => {
         <MaterialIcons
           name={isMicroActive ? 'mic-off' : 'mic'}
           size={24}
-          color="black"
+          color="grey"
         />
       </TouchableOpacity>
     </View>

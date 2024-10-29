@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { loadWalletData, saveWalletData } from '../components/DataStorage';
-import { denominationImages } from '../components/DenominationVisuals';
+import DenominationItem, { denominationImages } from '../components/DenominationVisuals';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import { CommonStyles, ChangeScreenStyles } from '../styles/AllStyles';
@@ -84,27 +84,17 @@ export function ChangeScreen({ route, navigation }) {
 
   return (
     <View style={CommonStyles.container}>
-      <Card>
-        <Text style={CommonStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
-      </Card>
+      <Text style={CommonStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
 
-      <Card>
-        <View style={ChangeScreenStyles.changeContainer}>
-          {Object.keys(wallet).map((denomination) => (
-            <TouchableOpacity key={denomination} onPress={() => handleDenominationPress(denomination)}>
-              <Image source={denominationImages[denomination]} style={ChangeScreenStyles.denominationImage} />
-              <Text style={ChangeScreenStyles.denominationText}>
-                {denomination} € : {changeSelection[denomination] || 0}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </Card>
+      <View style={ChangeScreenStyles.changeContainer}>
+        {Object.keys(wallet).map((denomination) => (
+          <TouchableOpacity key={denomination} onPress={() => handleDenominationPress(denomination)}>
+            <DenominationItem denomination={denomination} count={changeSelection[denomination] || 0} />
+          </TouchableOpacity>
+        ))}
+      </View>
 
-      {remainingChange === 0 && (
-        <Button title="Valider" onPress={handleValidation} />
-      )}
-
+      {remainingChange === 0 && (<Button title="Valider" onPress={handleValidation} />)}
       <Button title="Réinitialiser" onPress={resetSelections} />
     </View>
   );

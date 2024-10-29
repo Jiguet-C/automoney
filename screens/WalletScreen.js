@@ -99,12 +99,13 @@ export function WalletScreen() {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <View style={WalletScreenStyles.modalView}>
-            <Text style={WalletScreenStyles.modalTitle}>Modifier {selectedDenomination} €</Text>
+            <Text style={CommonStyles.modalTitle}>Entrez la quantité de {selectedDenomination} €</Text>
+            <Text style={CommonStyles.modalExemple}>Dites : "deux billets" ou "deux pièces"</Text>
             <DenominationItem denomination={selectedDenomination} count={newAmount || 0} />
             <VoiceInput
               value={newAmount}
               onChangeText={setNewAmount}
-              placeholder={`Entrez le montant pour ${selectedDenomination} €`}
+              placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
             />
             <Button title="Enregistrer" onPress={saveAmount} />
             <Button title="Fermer" onPress={() => setModalVisible(false)} />

@@ -143,11 +143,12 @@ export function PayScreen({ navigation }) {
         </View>
       ) : (
         <View>
-          <Text style={PayScreenStyles.label}>Montant à payer (en €) :</Text>
+          <Text style={CommonStyles.modalTitle}>Montant à payer (en €) :</Text>
+          <Text style={CommonStyles.modalExemple}>Dites : "trente euros"</Text>
           <VoiceInput
             value={amountToPay}
             onChangeText={handleVoiceInput}
-            placeholder="Entrez le montant à payer"
+            placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
           />
           <Button title="Calculer" onPress={calculatePaymentHandler} />
           {error && <Text style={PayScreenStyles.errorText}>{error}</Text>}

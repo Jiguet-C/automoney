@@ -62,6 +62,16 @@ const CommonStyles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 15,
+  },
+  modalExemple: {
+    fontSize: 20,
+    marginBottom: 15,
+    color: 'grey',
+    fontStyle: 'italic',
+  },
   errorText: {
     color: 'red',
     fontSize: 16,
@@ -99,7 +109,7 @@ const HomeScreenStyles = StyleSheet.create({
 const BudgetGaugeStyles = StyleSheet.create({
   container: {
     ...CommonStyles.container,
-		flex: 0,
+    flex: 0,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -112,10 +122,6 @@ const BudgetGaugeStyles = StyleSheet.create({
   },
   modalView: {
     ...CommonStyles.modalView,
-  },
-  modalTitle: {
-    fontSize: 20,
-    marginBottom: 15,
   },
   input: {
     ...CommonStyles.input,
@@ -201,7 +207,7 @@ const WalletScreenStyles = StyleSheet.create({
   buttonText: {
     ...CommonStyles.buttonText,
   },
-	summaryContainer: {
+  summaryContainer: {
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#EFEFEF',
