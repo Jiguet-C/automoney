@@ -21,7 +21,7 @@ const CommonStyles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#d3d3d3',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -78,31 +78,33 @@ const CommonStyles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
+	denominationContainer: {
+		margin: 5,
+	},
+	denominationText: {
+		fontStyle: 'italic',
+		textAlign: 'center',
+	},
 });
 
 const HomeScreenStyles = StyleSheet.create({
   container: {
     ...CommonStyles.container,
   },
-  walletButton: {
+  greenButton: {
     ...CommonStyles.button,
+		backgroundColor: '#4CAF50',
   },
-  payButton: {
+  redButton: {
     ...CommonStyles.button,
+		backgroundColor: 'orange',
   },
-  buttonText: {
-    ...CommonStyles.buttonText,
-    fontSize: 20,
-  },
-  amountText: {
+  totalAmount: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
     marginTop: 10,
-  },
-  budgetText: {
-    fontSize: 20,
-    textAlign: 'center',
+		textAlign: 'center',
   },
 });
 
@@ -111,70 +113,13 @@ const BudgetGaugeStyles = StyleSheet.create({
     ...CommonStyles.container,
     flex: 0,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'relative',
-    marginTop: 20,
-  },
-  modalContainer: {
-    ...CommonStyles.modalContainer,
-  },
-  modalView: {
-    ...CommonStyles.modalView,
-  },
-  input: {
-    ...CommonStyles.input,
-    flexGrow: 1,
-  },
-  iconContainer: {
-    position: 'absolute',
-    right: 10,
-  },
-  saveButton: {
+	greenButton: {
     ...CommonStyles.button,
+		backgroundColor: '#4CAF50',
   },
-  saveButtonText: {
-    ...CommonStyles.buttonText,
-  },
-  cancelButton: {
+  redButton: {
     ...CommonStyles.button,
-    backgroundColor: '#f44336',
-  },
-  cancelButtonText: {
-    ...CommonStyles.buttonText,
-  },
-});
-
-const WalletScreenStyles = StyleSheet.create({
-  container: {
-    ...CommonStyles.container,
-  },
-  totalContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  totalText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  totalAmount: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  walletContainer: {
-    ...CommonStyles.container,
-    marginBottom: 20,
-  },
-  itemContainer: {
-    alignItems: 'center',
-    margin: 10,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginBottom: 5,
+		backgroundColor: 'orange',
   },
   modalContainer: {
     ...CommonStyles.modalContainer,
@@ -183,40 +128,65 @@ const WalletScreenStyles = StyleSheet.create({
     ...CommonStyles.modalView,
   },
   modalTitle: {
-    ...CommonStyles.title,
+    ...CommonStyles.modalTitle,
   },
+	modalExemple: {
+		...CommonStyles.modalExemple,
+	},
+});
+
+const WalletScreenStyles = StyleSheet.create({
+  container: {
+    ...CommonStyles.container,
+		padding: 10,
+  },
+	greenButton: {
+    ...CommonStyles.button,
+		backgroundColor: '#4CAF50',
+  },
+  redButton: {
+    ...CommonStyles.button,
+		backgroundColor: 'orange',
+  },
+  totalText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+    marginTop: 10,
+  },
+  totalAmount: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+	walletContainer: {
+    justifyContent: 'center',
+    marginBottom: 20,
+		alignItems: 'center',
+  },
+  modalContainer: {
+    ...CommonStyles.modalContainer,
+  },
+  modalView: {
+    ...CommonStyles.modalView,
+  },
+  modalTitle: {
+    ...CommonStyles.modalTitle,
+  },
+	modalExemple: {
+		...CommonStyles.modalExemple,
+	},
   modalImage: {
     width: 200,
     height: 150,
     resizeMode: 'contain',
     marginBottom: 20,
   },
-  input: {
-    ...CommonStyles.input,
-    fontSize: 18,
-  },
-  buttonContainer: {
+	denominationContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  button: {
-    ...CommonStyles.button,
-    maxWidth: '50%',
-  },
-  buttonText: {
-    ...CommonStyles.buttonText,
-  },
-  summaryContainer: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#EFEFEF',
-    borderRadius: 5,
-    marginVertical: 10,
-  },
-  totalText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+		alignItems: 'flex-end',
   },
 });
 
@@ -224,6 +194,20 @@ const PayScreenStyles = StyleSheet.create({
   container: {
     ...CommonStyles.container,
   },
+	greenButton: {
+    ...CommonStyles.button,
+		backgroundColor: '#4CAF50',
+  },
+  redButton: {
+    ...CommonStyles.button,
+		backgroundColor: 'orange',
+  },
+  modalTitle: {
+    ...CommonStyles.modalTitle,
+	},
+	modalExemple: {
+		...CommonStyles.modalExemple,
+	},
   label: {
     ...CommonStyles.label,
     fontWeight: 'bold',
@@ -233,34 +217,12 @@ const PayScreenStyles = StyleSheet.create({
     alignItems: 'center',
   },
   denominationImage: {
-    width: 100,
-    height: 100,
     resizeMode: 'contain',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
-  },
-  button: {
-    ...CommonStyles.button,
-    backgroundColor: '#2196F3',
-  },
-  backButton: {
-    ...CommonStyles.button,
-    backgroundColor: 'orange',
-  },
-  validateButton: {
-    ...CommonStyles.button,
-    backgroundColor: 'green',
-  },
-  calculateButton: {
-    ...CommonStyles.button,
-    marginTop: 20,
-    alignSelf: 'center',
-  },
-  solutionContainer: {
-    ...CommonStyles.container,
   },
   errorText: {
     ...CommonStyles.errorText,
@@ -270,7 +232,15 @@ const PayScreenStyles = StyleSheet.create({
 const ChangeScreenStyles = StyleSheet.create({
   container: {
     ...CommonStyles.container,
-    padding: 20,
+    padding: 10,
+  },
+	greenButton: {
+    ...CommonStyles.button,
+		backgroundColor: '#4CAF50',
+  },
+  redButton: {
+    ...CommonStyles.button,
+		backgroundColor: 'orange',
   },
   label: {
     ...CommonStyles.label,
@@ -278,32 +248,11 @@ const ChangeScreenStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
-  denominationContainer: {
+	denominationContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 20,
-  },
-  denominationImage: {
-    width: 70,
-    height: 70,
-    margin: 10,
-    borderRadius: 35,
-    borderWidth: 2,
-    borderColor: '#ddd',
-  },
-  denominationText: {
-    fontSize: 16,
-    color: '#333',
-    textAlign: 'center',
-    marginTop: 5,
-  },
-  resetButton: {
-    ...CommonStyles.button,
-    backgroundColor: '#dc3545',
-  },
-  validateButton: {
-    ...CommonStyles.button,
+		alignItems: 'flex-end',
   },
 });
 
@@ -315,7 +264,7 @@ const VoiceInputStyles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    borderColor: 'blue',
+    borderColor: 'grey',
     position: 'relative',
   },
   input: {

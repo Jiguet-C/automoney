@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, FlatList, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Image, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { saveWalletData, loadWalletData } from '../components/DataStorage';
-import DenominationItem, { denominationsData } from '../components/DenominationVisuals';
+import { DenominationItem, DenominationData } from '../components/DenominationVisuals';
 import VoiceInput from '../components/VoiceInput';
 import { CommonStyles, WalletScreenStyles } from '../styles/AllStyles';
 import Button from '../components/Button';
@@ -25,6 +25,7 @@ export function WalletScreen() {
 
   const handleItemPress = (denomination) => {
     setSelectedDenomination(denomination);
+		console.log("Selected Denomination:", denomination); // Vérifiez ce qui est sélectionné
     setModalVisible(true);
     setNewAmount('');
   };
@@ -51,7 +52,7 @@ export function WalletScreen() {
         {
           text: 'Réinitialiser',
           onPress: () => {
-            const newWallet = denominationsData.reduce((acc, denomination) => {
+            const newWallet = DenominationData.reduce((acc, denomination) => {
               acc[denomination.value] = 0; // Utilisez denomination.value pour la clé
               return acc;
             }, {});
@@ -72,19 +73,15 @@ export function WalletScreen() {
   );
 
   return (
-    <View style={CommonStyles.container}>
+    <View style={WalletScreenStyles.container}>
       <Text style={WalletScreenStyles.totalText}>Mon porte-monnaie</Text>
       <Text style={WalletScreenStyles.totalAmount}>
         {(Object.keys(wallet).reduce((acc, key) => acc + (wallet[key] || 0) * parseFloat(key), 0)).toFixed(2)} €
       </Text>
 
-      <FlatList
-        data={denominationsData.map((denomination) => ({ denomination }))}
-        renderItem={renderWalletItem}
-        keyExtractor={(item) => item.denomination.value}
-        numColumns={3}
-        contentContainerStyle={WalletScreenStyles.walletContainer}
-      />
+      <View style={WalletScreenStyles.denominationContainer}>
+  			{DenominationData.map((denomination) => renderWalletItem({ item: { denomination } }))}
+			</View>
 
       <Button title="Réinitialiser le portefeuille" onPress={resetWallet} />
 
@@ -99,16 +96,21 @@ export function WalletScreen() {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <View style={WalletScreenStyles.modalView}>
-            <Text style={CommonStyles.modalTitle}>Entrez la quantité de {selectedDenomination?.value} €</Text>
-            <Text style={CommonStyles.modalExemple}>Dites : "deux billets" ou "deux pièces"</Text>
-            <DenominationItem denomination={selectedDenomination} count={newAmount || 0} />
+            <Text style={WalletScreenStyles.modalTitle}>Entrez la quantité de {selectedDenomination?.value} €</Text>
+            <Text style={WalletScreenStyles.modalExemple}>Dites : "deux billets" ou "deux pièces"</Text>
+            {selectedDenomination && (
+        			<Image
+          			source={selectedDenomination.image}
+          			style={WalletScreenStyles.modalImage}
+        			/>
+     			  )}
             <VoiceInput
               value={newAmount}
               onChangeText={setNewAmount}
               placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
             />
-            <Button title="Enregistrer" onPress={saveAmount} />
-            <Button title="Fermer" onPress={() => setModalVisible(false)} />
+            <Button title="Enregistrer" style={ WalletScreenStyles.greenButton } onPress={saveAmount} />
+            <Button title="Fermer" style={ WalletScreenStyles.redButton } onPress={() => setModalVisible(false)} />
           </View>
         </KeyboardAvoidingView>
       </Modal>

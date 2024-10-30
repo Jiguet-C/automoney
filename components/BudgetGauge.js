@@ -68,8 +68,8 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <View style={BudgetGaugeStyles.modalView}>
-            <Text style={CommonStyles.modalTitle}>Entrez votre budget (en €)</Text>
-            <Text style={CommonStyles.modalExemple}>Dites : "trente euros"</Text>
+            <Text style={BudgetGaugeStyles.modalTitle}>Entrez votre budget (en €)</Text>
+            <Text style={BudgetGaugeStyles.modalExemple}>Dites : "trente euros"</Text>
             <VoiceInput
               value={inputValue}
               onChangeText={setInputValue}
@@ -77,8 +77,8 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
               keyboardType="numeric"
               placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
             />
-            <Button title="Enregistrer" onPress={() => saveBudgetData(parseFloat(inputValue))} />
-            <Button title="Fermer" onPress={() => setModalVisible(false)} />
+            <Button title="Enregistrer" style={ BudgetGaugeStyles.greenButton } onPress={() => saveBudgetData(parseFloat(inputValue))} />
+            <Button title="Fermer" style={ BudgetGaugeStyles.redButton } onPress={() => setModalVisible(false)} />
           </View>
         </KeyboardAvoidingView>
       </Modal>

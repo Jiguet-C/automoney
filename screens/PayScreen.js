@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { loadWalletData, saveWalletData } from '../components/DataStorage';
 import VoiceInput from '../components/VoiceInput';
 import { calculatePayment } from '../components/PaymentCalculator';
-import { denominationsData } from '../components/DenominationVisuals';
+import { DenominationData } from '../components/DenominationVisuals';
 import Button from '../components/Button';
 import { CommonStyles, PayScreenStyles } from '../styles/AllStyles';
 
@@ -115,7 +115,7 @@ export function PayScreen({ navigation }) {
     : null;
   console.log("Current denomination:", currentDenomination);
 
-  const currentDenominationData = denominationsData.find(item => item.value === currentDenomination);
+  const currentDenominationData = DenominationData.find(item => item.value === currentDenomination);
 
   return (
     <KeyboardAvoidingView
@@ -123,30 +123,30 @@ export function PayScreen({ navigation }) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       {solution ? (
-        <View style={CommonStyles.container}>
+        <View style={PayScreenStyles.container}>
           <Text style={PayScreenStyles.label}>Montant à payer : {(remainingAmount / 100).toFixed(2)} €</Text>
           {currentDenomination && currentDenominationData && (
             <View style={PayScreenStyles.denominationContainer}>
               <Image
                 source={currentDenominationData.image}
-                style={PayScreenStyles.denominationImage}
                 onError={() => console.error(`Image non trouvée pour la dénomination: ${currentDenomination}`)}
+								style={{
+									width: currentDenominationData.width,
+									height: currentDenominationData.height,
+								 }}
               />
-              <Text style={PayScreenStyles.text}>
-                {currentDenominationCount} × {currentDenomination} €
-              </Text>
             </View>
           )}
           <View style={PayScreenStyles.buttonContainer}>
-            <Button title="Retour" onPress={() => navigation.goBack()} />
-            <Button title="Valider" onPress={validatePayment} />
+            <Button title="Retour" style={ PayScreenStyles.redButton } onPress={() => navigation.goBack()} />
+            <Button title="Valider" style={ PayScreenStyles.greenButton } onPress={validatePayment} />
           </View>
           {error && <Text style={PayScreenStyles.errorText}>{error}</Text>}
         </View>
       ) : (
         <View>
-          <Text style={CommonStyles.modalTitle}>Montant à payer (en €) :</Text>
-          <Text style={CommonStyles.modalExemple}>Dites : "trente euros"</Text>
+          <Text style={PayScreenStyles.modalTitle}>Montant à payer (en €) :</Text>
+          <Text style={PayScreenStyles.modalExemple}>Dites : "trente euros"</Text>
           <VoiceInput
             value={amountToPay}
             onChangeText={handleVoiceInput}

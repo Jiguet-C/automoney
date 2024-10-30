@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { loadWalletData, saveWalletData } from '../components/DataStorage';
-import DenominationItem, { denominationsData } from '../components/DenominationVisuals';
+import { DenominationItem, DenominationData } from '../components/DenominationVisuals';
 import Button from '../components/Button';
 import { CommonStyles, ChangeScreenStyles } from '../styles/AllStyles';
 
@@ -82,18 +82,18 @@ export function ChangeScreen({ route, navigation }) {
   };
 
   return (
-    <View style={CommonStyles.container}>
-      <Text style={CommonStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
+    <View style={ChangeScreenStyles.container}>
+      <Text style={ChangeScreenStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
 
       <View style={ChangeScreenStyles.denominationContainer}>
-        {denominationsData.map((denomination) => (
+        {DenominationData.map((denomination) => (
           <TouchableOpacity key={denomination.value} onPress={() => handleDenominationPress(denomination.value)}>
             <DenominationItem denomination={denomination} count={changeSelection[denomination.value] || 0} />
           </TouchableOpacity>
         ))}
       </View>
 
-      {remainingChange === 0 && (<Button title="Valider" onPress={handleValidation} />)}
+      {remainingChange === 0 && (<Button title="Valider" style={ ChangeScreenStyles.greenButton } onPress={handleValidation} />)}
       <Button title="Réinitialiser" onPress={resetSelections} />
     </View>
   );
