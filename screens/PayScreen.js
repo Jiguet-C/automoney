@@ -7,6 +7,7 @@ import { calculatePayment } from '../components/PaymentCalculator';
 import { DenominationData } from '../components/DenominationVisuals';
 import Button from '../components/Button';
 import { CommonStyles, PayScreenStyles } from '../styles/AllStyles';
+import { extractEurosNumbers } from '../components/VoiceRecognition';
 
 export function PayScreen({ navigation }) {
   const [amountToPay, setAmountToPay] = useState('');
@@ -37,8 +38,8 @@ export function PayScreen({ navigation }) {
   );
 
   const handleVoiceInput = (input) => {
-    setAmountToPay(input.replace(',', '.'));
-    console.log("Voice input set to:", input.replace(',', '.'));
+    setAmountToPay(input);
+    console.log("Voice input set to:", input);
   };
 
   const calculatePaymentHandler = () => {
@@ -130,10 +131,10 @@ export function PayScreen({ navigation }) {
               <Image
                 source={currentDenominationData.image}
                 onError={() => console.error(`Image non trouvée pour la dénomination: ${currentDenomination}`)}
-								style={{
-									width: currentDenominationData.width,
-									height: currentDenominationData.height,
-								 }}
+                style={{
+                  width: currentDenominationData.width,
+                  height: currentDenominationData.height,
+                 }}
               />
             </View>
           )}
@@ -150,6 +151,7 @@ export function PayScreen({ navigation }) {
           <VoiceInput
             value={amountToPay}
             onChangeText={handleVoiceInput}
+            extractFunction={extractEurosNumbers}
             placeholder="Appuyer sur l'icône pour la reconnaissance vocale"
           />
           <Button title="Calculer" onPress={calculatePaymentHandler} />

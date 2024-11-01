@@ -33,18 +33,18 @@ export function ChangeScreen({ route, navigation }) {
       return;
     }
 
-    const denominationValue = parseFloat(denomination) * 100;
+    const denominationValue = parseFloat(denomination.value) * 100;
     const newRemainingChange = remainingChange - denominationValue;
 
     if (newRemainingChange >= 0) {
-      console.log("Selecting denomination:", denomination, "New remaining change:", newRemainingChange);
+      console.log("Selecting denomination:", denomination.value, "New remaining change:", newRemainingChange);
       setRemainingChange(newRemainingChange);
       setChangeSelection((prevSelection) => ({
         ...prevSelection,
-        [denomination]: (prevSelection[denomination] || 0) + 1,
+        [denomination.value]: (prevSelection[denomination.value] || 0) + 1,
       }));
     } else {
-      console.log("Insufficient remaining change for denomination:", denomination);
+      console.log("Insufficient remaining change for denomination:", denomination.value);
     }
   };
 
@@ -87,7 +87,7 @@ export function ChangeScreen({ route, navigation }) {
 
       <View style={ChangeScreenStyles.denominationContainer}>
         {DenominationData.map((denomination) => (
-          <TouchableOpacity key={denomination.value} onPress={() => handleDenominationPress(denomination.value)}>
+          <TouchableOpacity key={denomination.value} onPress={() => handleDenominationPress(denomination)}>
             <DenominationItem denomination={denomination} count={changeSelection[denomination.value] || 0} />
           </TouchableOpacity>
         ))}

@@ -78,13 +78,13 @@ const CommonStyles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
-	denominationContainer: {
-		margin: 5,
-	},
-	denominationText: {
-		fontStyle: 'italic',
-		textAlign: 'center',
-	},
+  denominationContainer: {
+    margin: 5,
+  },
+  denominationText: {
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
 });
 
 const HomeScreenStyles = StyleSheet.create({
@@ -93,18 +93,18 @@ const HomeScreenStyles = StyleSheet.create({
   },
   greenButton: {
     ...CommonStyles.button,
-		backgroundColor: '#4CAF50',
+    backgroundColor: '#4CAF50',
   },
   redButton: {
     ...CommonStyles.button,
-		backgroundColor: 'orange',
+    backgroundColor: 'orange',
   },
   totalAmount: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
     marginTop: 10,
-		textAlign: 'center',
+    textAlign: 'center',
   },
 });
 
@@ -113,13 +113,13 @@ const BudgetGaugeStyles = StyleSheet.create({
     ...CommonStyles.container,
     flex: 0,
   },
-	greenButton: {
+  greenButton: {
     ...CommonStyles.button,
-		backgroundColor: '#4CAF50',
+    backgroundColor: '#4CAF50',
   },
   redButton: {
     ...CommonStyles.button,
-		backgroundColor: 'orange',
+    backgroundColor: 'orange',
   },
   modalContainer: {
     ...CommonStyles.modalContainer,
@@ -130,23 +130,23 @@ const BudgetGaugeStyles = StyleSheet.create({
   modalTitle: {
     ...CommonStyles.modalTitle,
   },
-	modalExemple: {
-		...CommonStyles.modalExemple,
-	},
+  modalExemple: {
+    ...CommonStyles.modalExemple,
+  },
 });
 
 const WalletScreenStyles = StyleSheet.create({
   container: {
     ...CommonStyles.container,
-		padding: 10,
+    padding: 10,
   },
-	greenButton: {
+  greenButton: {
     ...CommonStyles.button,
-		backgroundColor: '#4CAF50',
+    backgroundColor: '#4CAF50',
   },
   redButton: {
     ...CommonStyles.button,
-		backgroundColor: 'orange',
+    backgroundColor: 'orange',
   },
   totalText: {
     fontSize: 24,
@@ -159,10 +159,10 @@ const WalletScreenStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-	walletContainer: {
+  walletContainer: {
     justifyContent: 'center',
     marginBottom: 20,
-		alignItems: 'center',
+    alignItems: 'center',
   },
   modalContainer: {
     ...CommonStyles.modalContainer,
@@ -173,20 +173,20 @@ const WalletScreenStyles = StyleSheet.create({
   modalTitle: {
     ...CommonStyles.modalTitle,
   },
-	modalExemple: {
-		...CommonStyles.modalExemple,
-	},
+  modalExemple: {
+    ...CommonStyles.modalExemple,
+  },
   modalImage: {
     width: 200,
     height: 150,
     resizeMode: 'contain',
     marginBottom: 20,
   },
-	denominationContainer: {
+  denominationContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-		alignItems: 'flex-end',
+    alignItems: 'flex-end',
   },
 });
 
@@ -194,20 +194,20 @@ const PayScreenStyles = StyleSheet.create({
   container: {
     ...CommonStyles.container,
   },
-	greenButton: {
+  greenButton: {
     ...CommonStyles.button,
-		backgroundColor: '#4CAF50',
+    backgroundColor: '#4CAF50',
   },
   redButton: {
     ...CommonStyles.button,
-		backgroundColor: 'orange',
+    backgroundColor: 'orange',
   },
   modalTitle: {
     ...CommonStyles.modalTitle,
-	},
-	modalExemple: {
-		...CommonStyles.modalExemple,
-	},
+  },
+  modalExemple: {
+    ...CommonStyles.modalExemple,
+  },
   label: {
     ...CommonStyles.label,
     fontWeight: 'bold',
@@ -234,13 +234,13 @@ const ChangeScreenStyles = StyleSheet.create({
     ...CommonStyles.container,
     padding: 10,
   },
-	greenButton: {
+  greenButton: {
     ...CommonStyles.button,
-		backgroundColor: '#4CAF50',
+    backgroundColor: '#4CAF50',
   },
   redButton: {
     ...CommonStyles.button,
-		backgroundColor: 'orange',
+    backgroundColor: 'orange',
   },
   label: {
     ...CommonStyles.label,
@@ -248,11 +248,11 @@ const ChangeScreenStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
-	denominationContainer: {
+  denominationContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-		alignItems: 'flex-end',
+    alignItems: 'flex-end',
   },
 });
 

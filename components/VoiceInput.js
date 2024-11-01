@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import extractNumbers from './VoiceRecognition';
 import { VoiceInputStyles } from '../styles/AllStyles';
 
-const VoiceInput = ({ value, onChangeText, placeholder }) => {
+const VoiceInput = ({ value, onChangeText, placeholder, extractFunction }) => {
   const [keyboardType, setKeyboardType] = useState('numeric');
   const [isMicroActive, setIsMicroActive] = useState(false);
 
@@ -14,17 +13,14 @@ const VoiceInput = ({ value, onChangeText, placeholder }) => {
   };
 
   const handleVoiceInput = (input) => {
-    const numericInput = extractNumbers(input); // Utiliser la reconnaissance vocale
+    const numericInput = extractFunction(input); // Utiliser la fonction d'extraction passée
     onChangeText(numericInput); // Mettre à jour le texte avec le nombre extrait
   };
 
   const handleTextChange = (text) => {
     // Si le clavier est numérique, juste passer le texte
     if (keyboardType === 'numeric') {
-      // Vérifier et formater le texte pour avoir jusqu'à 2 chiffres après la virgule
-      const formattedText = text.replace(',', '.').replace(/^(\d+\.?\d{0,2}).*$/, '$1');
-      console.log(`Text input (numeric): ${formattedText}`);
-      onChangeText(formattedText);
+      onChangeText(text);
     } else {
       // Sinon, traiter le texte comme entrée vocale
       handleVoiceInput(text);

@@ -6,6 +6,7 @@ import { DenominationItem, DenominationData } from '../components/DenominationVi
 import VoiceInput from '../components/VoiceInput';
 import { CommonStyles, WalletScreenStyles } from '../styles/AllStyles';
 import Button from '../components/Button';
+import { extractBilletsNumbers } from '../components/VoiceRecognition';
 
 export function WalletScreen() {
   const [wallet, setWallet] = useState({});
@@ -25,7 +26,7 @@ export function WalletScreen() {
 
   const handleItemPress = (denomination) => {
     setSelectedDenomination(denomination);
-		console.log("Selected Denomination:", denomination); // Vérifiez ce qui est sélectionné
+    console.log("Selected Denomination:", denomination); // Vérifiez ce qui est sélectionné
     setModalVisible(true);
     setNewAmount('');
   };
@@ -66,12 +67,6 @@ export function WalletScreen() {
     );
   };
 
-  const renderWalletItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleItemPress(item.denomination)}>
-      <DenominationItem denomination={item.denomination} count={wallet[item.denomination.value] || 0} />
-    </TouchableOpacity>
-  );
-
   return (
     <View style={WalletScreenStyles.container}>
       <Text style={WalletScreenStyles.totalText}>Mon porte-monnaie</Text>
@@ -80,8 +75,12 @@ export function WalletScreen() {
       </Text>
 
       <View style={WalletScreenStyles.denominationContainer}>
-  			{DenominationData.map((denomination) => renderWalletItem({ item: { denomination } }))}
-			</View>
+        {DenominationData.map((denomination) => (
+          <TouchableOpacity key={denomination.value} onPress={() => handleItemPress(denomination)}>
+            <DenominationItem denomination={denomination} count={wallet[denomination.value] || 0} />
+          </TouchableOpacity>
+        ))}
+      </View>
 
       <Button title="Réinitialiser le portefeuille" onPress={resetWallet} />
 
@@ -99,14 +98,15 @@ export function WalletScreen() {
             <Text style={WalletScreenStyles.modalTitle}>Entrez la quantité de {selectedDenomination?.value} €</Text>
             <Text style={WalletScreenStyles.modalExemple}>Dites : "deux billets" ou "deux pièces"</Text>
             {selectedDenomination && (
-        			<Image
-          			source={selectedDenomination.image}
-          			style={WalletScreenStyles.modalImage}
-        			/>
-     			  )}
+              <Image
+                source={selectedDenomination.image}
+                style={WalletScreenStyles.modalImage}
+              />
+            )}
             <VoiceInput
               value={newAmount}
               onChangeText={setNewAmount}
+              extractFunction={extractBilletsNumbers}
               placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
             />
             <Button title="Enregistrer" style={ WalletScreenStyles.greenButton } onPress={saveAmount} />

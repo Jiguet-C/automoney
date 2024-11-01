@@ -30,9 +30,9 @@ const HomeScreen = ({ navigation }) => {
 
       <Card>
         <Button title="Mon porte-monnaie" style={ [HomeScreenStyles.greenButton, HomeScreenStyles.buttonText] } onPress={() => navigation.navigate('Wallet')} />
-				<View>
-    			<Text style={HomeScreenStyles.totalAmount}>Total : {total.toFixed(2)} €</Text>
-  			</View>
+        <View>
+          <Text style={HomeScreenStyles.totalAmount}>Total : {total.toFixed(2)} €</Text>
+        </View>
       </Card>
 
       <Card>

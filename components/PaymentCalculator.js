@@ -2,7 +2,7 @@ export const calculateTotal = (wallet) => {
   return Object.keys(wallet).reduce((acc, key) => acc + (wallet[key] || 0) * parseFloat(key), 0);
   };
 
-  export const findBestSolution = (remainingAmount, coins, walletInCents) => {
+export const findBestSolution = (remainingAmount, coins, walletInCents) => {
   let bestSolution = null;
   let closestAmount = Infinity;
 
@@ -34,7 +34,7 @@ export const calculateTotal = (wallet) => {
 
   export const calculatePayment = (amountToPay, wallet) => {
   const totalWallet = calculateTotal(wallet);
-  let amount = parseFloat(amountToPay);
+  let amount = parseFloat(amountToPay.replace(',', '.').replace(/^(\d+\.?\d{0,2}).*$/, '$1'));
 
   if (isNaN(amount) || amount <= 0) {
     return { error: 'Montant invalide : Le montant doit être supérieur à zéro', solution: null };

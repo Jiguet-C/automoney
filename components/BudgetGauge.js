@@ -5,6 +5,7 @@ import { loadBudget, saveBudget } from './DataStorage';
 import { CommonStyles, BudgetGaugeStyles } from '../styles/AllStyles';
 import VoiceInput from './VoiceInput';
 import Button from '../components/Button';
+import { extractEurosNumbers } from './VoiceRecognition';
 
 const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,6 +46,12 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
     setModalVisible(false);
   };
 
+  const handleBudgetInput = (input) => {
+    // Remplacer la virgule par un point avant de parser
+    const normalizedInput = input.replace(',', '.');
+    return parseFloat(normalizedInput);
+  };
+
   return (
     <View style={BudgetGaugeStyles.container}>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -73,11 +80,18 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
             <VoiceInput
               value={inputValue}
               onChangeText={setInputValue}
-              onSubmit={() => saveBudgetData(parseFloat(inputValue))}
+              extractFunction={extractEurosNumbers}
+              onSubmit={() => {
+                const newBudget = handleBudgetInput(inputValue);
+                saveBudgetData(newBudget);
+              }}
               keyboardType="numeric"
               placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
             />
-            <Button title="Enregistrer" style={ BudgetGaugeStyles.greenButton } onPress={() => saveBudgetData(parseFloat(inputValue))} />
+            <Button title="Enregistrer" style={ BudgetGaugeStyles.greenButton } onPress={() => {
+              const newBudget = handleBudgetInput(inputValue);
+              saveBudgetData(newBudget);
+            }} />
             <Button title="Fermer" style={ BudgetGaugeStyles.redButton } onPress={() => setModalVisible(false)} />
           </View>
         </KeyboardAvoidingView>
