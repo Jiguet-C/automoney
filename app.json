@@ -12,16 +12,19 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+			"bundleIdentifier": "com.apf.automoney"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+			},
+			"package": "com.apf.automoney"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+		"scheme": "automoney"
   }
 }

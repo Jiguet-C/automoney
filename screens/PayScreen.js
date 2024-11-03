@@ -6,7 +6,7 @@ import VoiceInput from '../components/VoiceInput';
 import { calculatePayment } from '../components/PaymentCalculator';
 import { DenominationData } from '../components/DenominationVisuals';
 import Button from '../components/Button';
-import { CommonStyles, PayScreenStyles } from '../styles/AllStyles';
+import { PayScreenStyles } from '../styles/AllStyles';
 import { extractEurosNumbers } from '../components/VoiceRecognition';
 
 export function PayScreen({ navigation }) {
@@ -93,13 +93,16 @@ export function PayScreen({ navigation }) {
         const denominationValue = parseFloat(item.denomination).toFixed(2);
         updatedWallet[denominationValue] = (updatedWallet[denominationValue] || 0) - item.count;
       });
-      updatedWallet[currentDenomination] = (updatedWallet[currentDenomination] || 0) - currentDenominationCount; // Dernière dénomination validée
+      updatedWallet[currentDenomination] = (updatedWallet[currentDenomination] || 0) - currentDenominationCount;
 
       setWallet(updatedWallet);
-      await saveWalletData(updatedWallet);
-      console.log("Wallet updated and saved:", updatedWallet);
+      try {
+        await saveWalletData(updatedWallet);
+        console.log("Wallet updated and saved:", updatedWallet);
+      } catch (error) {
+        console.error("Erreur lors de la sauvegarde des données du portefeuille:", error);
+      }
 
-      // Vérifiez si le montant restant est nul ou positif
       if (remainingAmount - valueToDeduct === 0) {
         console.log("Returning to Home screen with exact payment.");
         navigation.navigate('Home');
@@ -134,13 +137,13 @@ export function PayScreen({ navigation }) {
                 style={{
                   width: currentDenominationData.width,
                   height: currentDenominationData.height,
-                 }}
+                }}
               />
             </View>
           )}
           <View style={PayScreenStyles.buttonContainer}>
-            <Button title="Retour" style={ PayScreenStyles.redButton } onPress={() => navigation.goBack()} />
-            <Button title="Valider" style={ PayScreenStyles.greenButton } onPress={validatePayment} />
+            <Button title="Retour" style={PayScreenStyles.redButton} onPress={() => navigation.goBack()} />
+            <Button title="Valider" style={PayScreenStyles.greenButton} onPress={validatePayment} />
           </View>
           {error && <Text style={PayScreenStyles.errorText}>{error}</Text>}
         </View>

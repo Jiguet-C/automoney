@@ -40,6 +40,10 @@ const BudgetGauge = ({ walletTotal, onBudgetChange }) => {
   const { x, y } = calculateArrowCoordinates(rotationAngle);
 
   const saveBudgetData = async (newBudget) => {
+    if (isNaN(newBudget) || newBudget < 0) {
+      alert('Veuillez entrer un budget valide supérieur à 0.');
+      return;
+    }
     await saveBudget(newBudget);
     setBudget(newBudget);
     if (onBudgetChange) onBudgetChange(newBudget);

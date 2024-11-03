@@ -38,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
       <Card>
         <Button title="Payer" style={ HomeScreenStyles.redButton } onPress={() => navigation.navigate('Pay')} />
       </Card>
+      <Button title="Paramètres" onPress={() => navigation.navigate('Settings')} />
     </View>
   );
 };

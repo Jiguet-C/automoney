@@ -1,46 +1,54 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { auth, db } from '../firebaseConfig';
 
 const STORAGE_KEYS = {
   WALLET: 'wallet',
   BUDGET: 'budget',
 };
 
-// Sauvegarder le budget
+// Sauvegarder le budget sur Firestore
 export const saveBudget = async (budget) => {
+  const userId = auth.currentUser.uid; // Récupère l'ID de l'utilisateur actuel
   try {
-    await AsyncStorage.setItem(STORAGE_KEYS.BUDGET, budget.toString());
+    await setDoc(doc(db, 'users', userId), { budget: budget }, { merge: true });
   } catch (error) {
-    console.error('Error saving budget:', error);
+    console.error('Erreur lors de la sauvegarde du budget sur Firestore:', error);
   }
 };
 
-// Charger le budget
+// Charger le budget depuis Firestore
 export const loadBudget = async () => {
+  const userId = auth.currentUser.uid; // Récupère l'ID de l'utilisateur actuel
   try {
-    const savedBudget = await AsyncStorage.getItem(STORAGE_KEYS.BUDGET);
-    return savedBudget ? parseFloat(savedBudget) : 0;
+    const docRef = doc(db, 'users', userId);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() && docSnap.data().budget ? docSnap.data().budget : 0;
   } catch (error) {
-    console.error('Error loading budget:', error);
+    console.error('Erreur lors du chargement du budget depuis Firestore:', error);
     return 0;
   }
 };
 
-export const loadWalletData = async () => {
+// Sauvegarder les données du portefeuille sur Firestore
+export const saveWalletData = async (walletData) => {
+  const userId = auth.currentUser.uid; // Récupère l'ID de l'utilisateur actuel
   try {
-    const jsonValue = await AsyncStorage.getItem(STORAGE_KEYS.WALLET);
-    return jsonValue != null ? JSON.parse(jsonValue) : {};
-  } catch (e) {
-    console.error('Error loading wallet data:', e);
-    return {};
+    await setDoc(doc(db, 'users', userId), { wallet: walletData }, { merge: true });
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde des données du portefeuille sur Firestore:', error);
   }
 };
 
-export const saveWalletData = async (walletData) => {
+// Charger les données du portefeuille depuis Firestore
+export const loadWalletData = async () => {
+  const userId = auth.currentUser.uid; // Récupère l'ID de l'utilisateur actuel
   try {
-    const jsonValue = JSON.stringify(walletData);
-    await AsyncStorage.setItem(STORAGE_KEYS.WALLET, jsonValue);
-  } catch (e) {
-    console.error('Error saving wallet data:', e);
+    const docRef = doc(db, 'users', userId);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() && docSnap.data().wallet ? docSnap.data().wallet : {};
+  } catch (error) {
+    console.error('Erreur lors du chargement des données du portefeuille depuis Firestore:', error);
+    return {};
   }
 };
 
@@ -59,4 +67,12 @@ export const updateWalletData = async (wallet, setWallet) => {
 export const updateBudgetAndWallet = async (budget, wallet, setWallet) => {
   await saveBudget(budget);
   await updateWalletData(wallet, setWallet);
+};
+
+// Charger les données au démarrage
+export const loadData = async (setWallet, setBudget) => {
+  const budget = await loadBudget();
+  const wallet = await loadWalletData();
+  setBudget(budget);
+  setWallet(wallet);
 };
