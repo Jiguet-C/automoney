@@ -13,9 +13,13 @@ const HomeScreen = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       const loadData = async () => {
-        const walletData = await loadWalletData();
-        const walletTotal = calculateTotal(walletData);
-        setTotal(walletTotal);
+        try {
+          const walletData = await loadWalletData();
+          const walletTotal = await calculateTotal(walletData);
+          setTotal(walletTotal);
+        } catch (error) {
+          console.error("Erreur lors du chargement des données du portefeuille :", error);
+        }
       };
 
       loadData();
@@ -24,21 +28,27 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={HomeScreenStyles.container}>
-      <Card>
         <BudgetGauge walletTotal={total} />
-      </Card>
-
       <Card>
-        <Button title="Mon porte-monnaie" style={ [HomeScreenStyles.greenButton, HomeScreenStyles.buttonText] } onPress={() => navigation.navigate('Wallet')} />
+        <Button
+          title="Mon porte-monnaie"
+          style={[HomeScreenStyles.greenButton, HomeScreenStyles.buttonText]}
+          onPress={() => navigation.navigate('Wallet')}
+        />
         <View>
           <Text style={HomeScreenStyles.totalAmount}>Total : {total.toFixed(2)} €</Text>
         </View>
       </Card>
 
       <Card>
-        <Button title="Payer" style={ HomeScreenStyles.redButton } onPress={() => navigation.navigate('Pay')} />
+        <Button
+          title="Payer"
+          style={HomeScreenStyles.redButton}
+          onPress={() => navigation.navigate('Pay')}
+        />
       </Card>
       <Button title="Paramètres" onPress={() => navigation.navigate('Settings')} />
+      <Button title="Historique" onPress={() => navigation.navigate('History')} />
     </View>
   );
 };

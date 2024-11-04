@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { loadWalletData, saveWalletData } from '../components/DataStorage';
+import { loadWalletData, saveWalletData, logPayment } from '../components/DataStorage';
 import VoiceInput from '../components/VoiceInput';
 import { calculatePayment } from '../components/PaymentCalculator';
 import { DenominationData } from '../components/DenominationVisuals';
@@ -99,6 +99,10 @@ export function PayScreen({ navigation }) {
       try {
         await saveWalletData(updatedWallet);
         console.log("Wallet updated and saved:", updatedWallet);
+
+        await logPayment(amountToPay);
+        console.log("Payment logged in history:", { amountToPay });
+
       } catch (error) {
         console.error("Erreur lors de la sauvegarde des données du portefeuille:", error);
       }

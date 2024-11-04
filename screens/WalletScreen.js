@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, Image, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { saveWalletData, loadWalletData } from '../components/DataStorage';
+import { saveWalletData, loadWalletData, logAction, calculateTotal } from '../components/DataStorage';
 import { DenominationItem, DenominationData } from '../components/DenominationVisuals';
 import VoiceInput from '../components/VoiceInput';
 import { CommonStyles, WalletScreenStyles } from '../styles/AllStyles';
@@ -17,8 +17,12 @@ export function WalletScreen() {
   useFocusEffect(
     React.useCallback(() => {
       const loadData = async () => {
-        const walletData = await loadWalletData();
-        setWallet(walletData);
+        try {
+          const walletData = await loadWalletData();
+          setWallet(walletData);
+        } catch (error) {
+          console.error("Erreur lors du chargement des données du portefeuille :", error);
+        }
       };
       loadData();
     }, [])
@@ -26,46 +30,67 @@ export function WalletScreen() {
 
   const handleItemPress = (denomination) => {
     setSelectedDenomination(denomination);
-    console.log("Selected Denomination:", denomination); // Vérifiez ce qui est sélectionné
     setModalVisible(true);
     setNewAmount('');
   };
 
-  const saveAmount = () => {
-    const amount = newAmount === '' || isNaN(parseInt(newAmount)) || parseInt(newAmount) < 0 ? 0 : parseInt(newAmount);
+  const saveAmount = async () => {
+		try {
+			const amount = newAmount === '' || isNaN(parseInt(newAmount)) || parseInt(newAmount) < 0 ? 0 : parseInt(newAmount);
+			const oldAmount = wallet[selectedDenomination.value] || 0;
+			const changeInAmount = amount - oldAmount;
+			const newWallet = { ...wallet, [selectedDenomination.value]: amount };
+			setWallet(newWallet);
+			await saveWalletData(newWallet);
 
-    const newWallet = { ...wallet, [selectedDenomination.value]: amount }; // Utilisez selectedDenomination.value pour la clé
-    setWallet(newWallet);
-    saveWalletData(newWallet);
-    console.log(`Updated wallet: ${JSON.stringify(newWallet)}`);
-    setModalVisible(false);
-  };
+			// Enregistrer l'historique pour l'action de mise à jour
+			await logAction(changeInAmount > 0 ? 'Ajout' : 'Retrait', {
+				totalWallet: await calculateTotal(), // Assurez-vous d'appeler la fonction correctement
+				walletChanges: { [selectedDenomination.value]: changeInAmount },
+			});
+		} catch (error) {
+			console.error("Erreur lors de la sauvegarde de la quantité :", error);
+		} finally {
+			setModalVisible(false);
+		}
+	};
 
   const resetWallet = () => {
-    Alert.alert(
-      'Réinitialiser le portefeuille',
-      'Êtes-vous sûr de vouloir réinitialiser le portefeuille à zéro ?',
-      [
-        {
-          text: 'Annuler',
-          style: 'cancel',
-        },
-        {
-          text: 'Réinitialiser',
-          onPress: () => {
-            const newWallet = DenominationData.reduce((acc, denomination) => {
-              acc[denomination.value] = 0; // Utilisez denomination.value pour la clé
-              return acc;
-            }, {});
-            setWallet(newWallet);
-            saveWalletData(newWallet);
-            console.log(`Wallet reset: ${JSON.stringify(newWallet)}`);
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-  };
+		Alert.alert(
+			'Réinitialiser le portefeuille',
+			'Êtes-vous sûr de vouloir réinitialiser le portefeuille à zéro ?',
+			[
+				{
+					text: 'Annuler',
+					style: 'cancel',
+				},
+				{
+					text: 'Réinitialiser',
+					onPress: async () => {
+						try {
+							const newWallet = DenominationData.reduce((acc, denomination) => {
+								acc[denomination.value] = 0;
+								return acc;
+							}, {});
+							setWallet(newWallet);
+							await saveWalletData(newWallet);
+
+							// Enregistrer l'historique pour l'action de réinitialisation
+							await logAction("Reset", {
+								totalWallet: await calculateTotal(),
+								walletChanges: {},
+							});
+
+							console.log(`Wallet reset: ${JSON.stringify(newWallet)}`);
+						} catch (error) {
+							console.error("Erreur lors de la réinitialisation du portefeuille :", error);
+						}
+					},
+				},
+			],
+			{ cancelable: false }
+		);
+	};
 
   return (
     <View style={WalletScreenStyles.container}>
@@ -107,15 +132,15 @@ export function WalletScreen() {
               value={newAmount}
               onChangeText={setNewAmount}
               extractFunction={extractBilletsNumbers}
-              placeholder="Appuyer sur l'icone pour la reconnaissance vocale"
+              placeholder="Appuyer sur l'icône pour la reconnaissance vocale"
             />
-            <Button title="Enregistrer" style={ WalletScreenStyles.greenButton } onPress={saveAmount} />
-            <Button title="Fermer" style={ WalletScreenStyles.redButton } onPress={() => setModalVisible(false)} />
+            <Button title="Valider" onPress={saveAmount} />
+            <Button title="Annuler" onPress={() => setModalVisible(false)} />
           </View>
         </KeyboardAvoidingView>
       </Modal>
     </View>
   );
-};
+}
 
 export default WalletScreen;

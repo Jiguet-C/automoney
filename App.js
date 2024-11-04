@@ -9,6 +9,7 @@ import PayScreen from './screens/PayScreen';
 import ChangeScreen from './screens/ChangeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import HistoryScreen from './screens/HistoryScreen';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ export default function App() {
         		<Stack.Screen name="Pay" component={PayScreen} />
         		<Stack.Screen name="Change" component={ChangeScreen} />
 						<Stack.Screen name="Settings" component={SettingsScreen} />
+						<Stack.Screen name="History" component={HistoryScreen} />
 					</>
 				) : (
 					<Stack.Screen name="Login" component={LoginScreen} />

@@ -1,6 +1,4 @@
-export const calculateTotal = (wallet) => {
-  return Object.keys(wallet).reduce((acc, key) => acc + (wallet[key] || 0) * parseFloat(key), 0);
-  };
+import { calculateTotal } from "./DataStorage";
 
 export const findBestSolution = (remainingAmount, coins, walletInCents) => {
   let bestSolution = null;
@@ -23,16 +21,16 @@ export const findBestSolution = (remainingAmount, coins, walletInCents) => {
       walletInCents[coinValue]++;
       currentSolution[coinValue]--;
     }
-    }
-  };
+  	}
+	};
 
-  // Tri des valeurs des billets/pièces en ordre décroissant
-  const sortedCoins = coins.sort((a, b) => b - a);
+	// Tri des valeurs des billets/pièces en ordre décroissant
+	const sortedCoins = coins.sort((a, b) => b - a);
   findCombinations({}, 0, 0);
   return bestSolution;
-  };
+};
 
-  export const calculatePayment = (amountToPay, wallet) => {
+export const calculatePayment = (amountToPay, wallet) => {
   const totalWallet = calculateTotal(wallet);
   let amount = parseFloat(amountToPay.replace(',', '.').replace(/^(\d+\.?\d{0,2}).*$/, '$1'));
 
@@ -70,4 +68,4 @@ export const findBestSolution = (remainingAmount, coins, walletInCents) => {
   } else {
     return { error: 'Erreur : Impossible de régler ce montant avec les pièces/billets disponibles', solution: null };
   }
-  };
+};
