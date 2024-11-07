@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { VoiceInputStyles } from '../styles/AllStyles';
+import React, { useState, useRef, useEffect } from "react";
+import { View, TextInput, Switch } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { VoiceInputStyles } from "../styles/AllStyles";
 
 const VoiceInput = ({ value, onChangeText, placeholder, extractFunction }) => {
-  const [keyboardType, setKeyboardType] = useState('numeric');
-  const [isMicroActive, setIsMicroActive] = useState(false);
+  const [keyboardType, setKeyboardType] = useState("numeric");
+  const inputRef = useRef(null);
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
 
   const toggleKeyboardType = () => {
-    setKeyboardType((prevType) => (prevType === 'numeric' ? 'default' : 'numeric'));
-    setIsMicroActive((prevState) => !prevState);
+    const newKeyboardType = isVoiceMode ? "numeric" : "default";
+    setKeyboardType(newKeyboardType);
+    setIsVoiceMode((prev) => !prev);
+    setTimeout(() => inputRef.current.focus(), 100);
   };
 
   const handleVoiceInput = (input) => {
-    const numericInput = extractFunction(input); // Utiliser la fonction d'extraction passée
-    onChangeText(numericInput); // Mettre à jour le texte avec le nombre extrait
+    const numericInput = extractFunction(input);
+    onChangeText(numericInput);
   };
 
   const handleTextChange = (text) => {
     // Si le clavier est numérique, juste passer le texte
-    if (keyboardType === 'numeric') {
+    if (keyboardType === "numeric") {
       onChangeText(text);
     } else {
       // Sinon, traiter le texte comme entrée vocale
@@ -29,21 +32,40 @@ const VoiceInput = ({ value, onChangeText, placeholder, extractFunction }) => {
 
   return (
     <View style={VoiceInputStyles.inputContainer}>
+      <View style={VoiceInputStyles.switchContainer}>
+        <View style={VoiceInputStyles.switchIconContainer}>
+          <MaterialIcons
+            name="keyboard"
+            style={[
+              VoiceInputStyles.switchIcon,
+              { color: isVoiceMode ? "grey" : "#597cff" },
+            ]}
+          />
+          <Switch
+            value={isVoiceMode}
+            onValueChange={toggleKeyboardType}
+            style={VoiceInputStyles.switch}
+            trackColor={{ false: "grey", true: "grey" }}
+            thumbColor="#597cff"
+          />
+          <MaterialIcons
+            name="mic"
+            style={[
+              VoiceInputStyles.switchIcon,
+              { color: isVoiceMode ? "#597cff" : "grey" },
+            ]}
+          />
+        </View>
+      </View>
       <TextInput
+        ref={inputRef}
         style={VoiceInputStyles.input}
         keyboardType={keyboardType}
         value={value}
         onChangeText={handleTextChange}
         placeholder={placeholder}
-        placeholderTextColor='gray'
+        placeholderTextColor="grey"
       />
-      <TouchableOpacity style={VoiceInputStyles.iconContainer} onPress={toggleKeyboardType}>
-        <MaterialIcons
-          name={isMicroActive ? 'mic-off' : 'mic'}
-          size={24}
-          color="grey"
-        />
-      </TouchableOpacity>
     </View>
   );
 };

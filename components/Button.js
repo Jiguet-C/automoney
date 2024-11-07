@@ -1,6 +1,6 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { CommonStyles } from '../styles/AllStyles';
+import React from "react";
+import { TouchableOpacity, Text } from "react-native";
+import { CommonStyles } from "../styles/AllStyles";
 
 const Button = ({ title, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[CommonStyles.button, style]}>

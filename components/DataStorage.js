@@ -1,31 +1,36 @@
-import { doc, setDoc, getDoc, collection, addDoc, query, getDocs, Timestamp } from "firebase/firestore";
-import { auth, db } from '../firebaseConfig';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
 
-// Fonction générique pour enregistrer une action dans l'historique
+// Fonction générique pour enregistrer une action dans l'historique de Firestore
 export const logAction = async (actionType, details) => {
   const userId = auth.currentUser.uid;
   try {
-    // Enregistrer l'action dans Firestore
-    const actionRef = await addDoc(collection(db, 'users', userId, 'history'), {
+    const actionRef = await addDoc(collection(db, "users", userId, "history"), {
       actionType,
       details,
       timestamp: Timestamp.now(),
     });
 
-    // Calculer le total du portefeuille après l'enregistrement de l'action
     const totalWallet = await calculateTotal();
 
-    // Inclure le totalWallet dans les détails
-    details.totalWallet = totalWallet.toFixed(2); // Formatage à deux décimales
+    details.totalWallet = totalWallet.toFixed(2);
 
-    // Mettre à jour l'entrée avec le totalWallet
     await setDoc(actionRef, { details }, { merge: true });
 
-    console.log('Historique sauvegardé:', { actionType, details, totalWallet });
-    return totalWallet; // Retourner le total du portefeuille
+    console.log("Historique sauvegardé:", { actionType, details, totalWallet });
+    return totalWallet;
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde de l\'historique :', error);
-    return null; // En cas d'erreur, retourner null
+    console.error("Erreur lors de la sauvegarde de l'historique :", error);
+    return null;
   }
 };
 
@@ -33,9 +38,12 @@ export const logAction = async (actionType, details) => {
 export const saveBudget = async (budget) => {
   const userId = auth.currentUser.uid;
   try {
-    await setDoc(doc(db, 'users', userId), { budget }, { merge: true });
+    await setDoc(doc(db, "users", userId), { budget }, { merge: true });
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde du budget sur Firestore:', error);
+    console.error(
+      "Erreur lors de la sauvegarde du budget sur Firestore:",
+      error
+    );
   }
 };
 
@@ -43,11 +51,16 @@ export const saveBudget = async (budget) => {
 export const loadBudget = async () => {
   const userId = auth.currentUser.uid;
   try {
-    const docRef = doc(db, 'users', userId);
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
-    return docSnap.exists() && docSnap.data().budget ? docSnap.data().budget : 0;
+    return docSnap.exists() && docSnap.data().budget
+      ? docSnap.data().budget
+      : 0;
   } catch (error) {
-    console.error('Erreur lors du chargement du budget depuis Firestore:', error);
+    console.error(
+      "Erreur lors du chargement du budget depuis Firestore:",
+      error
+    );
     return 0;
   }
 };
@@ -56,9 +69,16 @@ export const loadBudget = async () => {
 export const saveWalletData = async (walletData) => {
   const userId = auth.currentUser.uid;
   try {
-    await setDoc(doc(db, 'users', userId), { wallet: walletData }, { merge: true });
+    await setDoc(
+      doc(db, "users", userId),
+      { wallet: walletData },
+      { merge: true }
+    );
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde des données du portefeuille sur Firestore:', error);
+    console.error(
+      "Erreur lors de la sauvegarde des données du portefeuille sur Firestore:",
+      error
+    );
   }
 };
 
@@ -66,11 +86,16 @@ export const saveWalletData = async (walletData) => {
 export const loadWalletData = async () => {
   const userId = auth.currentUser.uid;
   try {
-    const docRef = doc(db, 'users', userId);
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
-    return docSnap.exists() && docSnap.data().wallet ? docSnap.data().wallet : {};
+    return docSnap.exists() && docSnap.data().wallet
+      ? docSnap.data().wallet
+      : {};
   } catch (error) {
-    console.error('Erreur lors du chargement des données du portefeuille depuis Firestore:', error);
+    console.error(
+      "Erreur lors du chargement des données du portefeuille depuis Firestore:",
+      error
+    );
     return {};
   }
 };
@@ -84,7 +109,11 @@ export const logAddToWallet = async (addedToWallet, denomination, quantity) => {
 };
 
 // Enregistrer le retrait d'argent
-export const logWithdrawFromWallet = async (withdrawnFromWallet, denomination, quantity) => {
+export const logWithdrawFromWallet = async (
+  withdrawnFromWallet,
+  denomination,
+  quantity
+) => {
   return await logAction("Retrait", {
     withdrawnFromWallet,
     walletChanges: { [denomination]: quantity },
@@ -99,24 +128,32 @@ export const logPayment = async (paymentAmount) => {
 };
 
 // Enregistrer le change rendu
-export const logChangeGiven = async (changeAmount, denomination, quantity, totalAfterChange) => {
+export const logChangeGiven = async (
+  changeAmount,
+  denomination,
+  quantity,
+  totalAfterChange
+) => {
   return await logAction("Change rendu", {
     changeAmount,
     walletChanges: { [denomination]: quantity },
-		totalAfterChange,
+    totalAfterChange,
   });
 };
 
 // Calculer le montant total du portefeuille
 export const calculateTotal = async () => {
   const wallet = await loadWalletData();
-  return Object.keys(wallet).reduce((acc, key) => acc + (wallet[key] || 0) * parseFloat(key), 0);
+  return Object.keys(wallet).reduce(
+    (acc, key) => acc + (wallet[key] || 0) * parseFloat(key),
+    0
+  );
 };
 
 // Charger l'historique des modifications du portefeuille
 export const loadWalletHistory = async (userId) => {
   try {
-    const q = query(collection(db, 'users', userId, 'history'));
+    const q = query(collection(db, "users", userId, "history"));
     const querySnapshot = await getDocs(q);
     const history = [];
     querySnapshot.forEach((doc) => {
@@ -124,7 +161,7 @@ export const loadWalletHistory = async (userId) => {
     });
     return history;
   } catch (error) {
-    console.error('Erreur lors du chargement de l\'historique:', error);
+    console.error("Erreur lors du chargement de l'historique:", error);
     return [];
   }
 };

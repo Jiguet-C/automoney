@@ -4,7 +4,7 @@
     "slug": "automoney",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -13,18 +13,21 @@
     },
     "ios": {
       "supportsTablet": true,
-			"bundleIdentifier": "com.apf.automoney"
+      "bundleIdentifier": "com.apf.automoney"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-			},
-			"package": "com.apf.automoney"
+      },
+      "package": "com.apf.automoney"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-		"scheme": "automoney"
+    "scheme": "automoney",
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

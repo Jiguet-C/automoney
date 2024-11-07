@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { loadWalletData, saveWalletData, logChangeGiven } from '../components/DataStorage';
-import { DenominationItem, DenominationData } from '../components/DenominationVisuals';
-import Button from '../components/Button';
-import { CommonStyles, ChangeScreenStyles } from '../styles/AllStyles';
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import {
+  loadWalletData,
+  saveWalletData,
+  logChangeGiven,
+} from "../components/DataStorage";
+import {
+  DenominationItem,
+  DenominationData,
+} from "../components/DenominationVisuals";
+import Button from "../components/Button";
+import { CommonStyles, ChangeScreenStyles } from "../styles/AllStyles";
 
 export function ChangeScreen({ route, navigation }) {
-  const [remainingChange, setRemainingChange] = useState(route.params.changeAmount);
-  const [originalChangeAmount] = useState(route.params.changeAmount); // Montant à rendre d'origine
+  const [remainingChange, setRemainingChange] = useState(
+    route.params.changeAmount
+  );
+  const [originalChangeAmount] = useState(route.params.changeAmount);
   const [changeSelection, setChangeSelection] = useState({});
   const [wallet, setWallet] = useState({});
-  const [totalWallet, setTotalWallet] = useState(0); // Total du portefeuille
+  const [totalWallet, setTotalWallet] = useState(0);
 
   const loadWallet = async () => {
     const walletData = await loadWalletData();
@@ -23,8 +32,11 @@ export function ChangeScreen({ route, navigation }) {
     console.log("Wallet loaded:", convertedWalletData);
 
     // Calculer le montant total du portefeuille
-    const total = Object.entries(convertedWalletData).reduce((acc, [key, value]) => acc + parseFloat(key) * value, 0);
-    setTotalWallet(total); // En euros
+    const total = Object.entries(convertedWalletData).reduce(
+      (acc, [key, value]) => acc + parseFloat(key) * value,
+      0
+    );
+    setTotalWallet(total);
   };
 
   useEffect(() => {
@@ -35,7 +47,9 @@ export function ChangeScreen({ route, navigation }) {
     console.log("Denomination pressed:", denomination);
 
     if (remainingChange <= 0) {
-      console.log("Remaining change is zero or negative, cannot select denomination.");
+      console.log(
+        "Remaining change is zero or negative, cannot select denomination."
+      );
       return;
     }
 
@@ -43,14 +57,22 @@ export function ChangeScreen({ route, navigation }) {
     const newRemainingChange = remainingChange - denominationValue;
 
     if (newRemainingChange >= 0) {
-      console.log("Selecting denomination:", denomination.value, "New remaining change:", newRemainingChange);
+      console.log(
+        "Selecting denomination:",
+        denomination.value,
+        "New remaining change:",
+        newRemainingChange
+      );
       setRemainingChange(newRemainingChange);
       setChangeSelection((prevSelection) => ({
         ...prevSelection,
         [denomination.value]: (prevSelection[denomination.value] || 0) + 1,
       }));
     } else {
-      console.log("Insufficient remaining change for denomination:", denomination.value);
+      console.log(
+        "Insufficient remaining change for denomination:",
+        denomination.value
+      );
     }
   };
 
@@ -67,7 +89,7 @@ export function ChangeScreen({ route, navigation }) {
 
     await saveWalletData(updatedWallet);
     console.log("Wallet updated and saved:", updatedWallet);
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   // Fonction pour enregistrer l'historique des changements rendus
@@ -75,11 +97,18 @@ export function ChangeScreen({ route, navigation }) {
     console.log("Logging change given to history...");
 
     // Montant total après ajout du change
-    const totalAfterChange = (totalWallet + originalChangeAmount / 100).toFixed(2); // Convertir en euros
+    const totalAfterChange = (totalWallet + originalChangeAmount / 100).toFixed(
+      2
+    );
 
     await Promise.all(
       Object.entries(changeSelection).map(([denomination, count]) =>
-        logChangeGiven(originalChangeAmount / 100, denomination, count, totalAfterChange) // Montant total après ajout
+        logChangeGiven(
+          originalChangeAmount / 100,
+          denomination,
+          count,
+          totalAfterChange
+        )
       )
     );
 
@@ -97,9 +126,11 @@ export function ChangeScreen({ route, navigation }) {
   const handleValidation = () => {
     console.log("Validation pressed. Remaining change:", remainingChange);
     if (remainingChange === 0) {
-      logChangeHistory().then(updateWallet).catch(err => {
-        console.error("Error logging change history:", err);
-      });
+      logChangeHistory()
+        .then(updateWallet)
+        .catch((err) => {
+          console.error("Error logging change history:", err);
+        });
     } else {
       console.log("Remaining change is not zero, cannot validate.");
     }
@@ -107,22 +138,34 @@ export function ChangeScreen({ route, navigation }) {
 
   return (
     <View style={ChangeScreenStyles.container}>
-      <Text style={ChangeScreenStyles.label}>Montant de rendu : {(remainingChange / 100).toFixed(2)} €</Text>
+      <Text style={ChangeScreenStyles.label}>
+        Montant de rendu : {(remainingChange / 100).toFixed(2)} €
+      </Text>
 
       <View style={ChangeScreenStyles.denominationContainer}>
         {DenominationData.map((denomination) => (
-          <TouchableOpacity key={denomination.value} onPress={() => handleDenominationPress(denomination)}>
-            <DenominationItem denomination={denomination} count={changeSelection[denomination.value] || 0} />
+          <TouchableOpacity
+            key={denomination.value}
+            onPress={() => handleDenominationPress(denomination)}
+          >
+            <DenominationItem
+              denomination={denomination}
+              count={changeSelection[denomination.value] || 0}
+            />
           </TouchableOpacity>
         ))}
       </View>
 
       {remainingChange === 0 && (
-        <Button title="Valider" style={ChangeScreenStyles.greenButton} onPress={handleValidation} />
+        <Button
+          title="Valider"
+          style={ChangeScreenStyles.greenButton}
+          onPress={handleValidation}
+        />
       )}
       <Button title="Réinitialiser" onPress={resetSelections} />
     </View>
   );
-};
+}
 
 export default ChangeScreen;
