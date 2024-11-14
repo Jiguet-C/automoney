@@ -1,77 +1,42 @@
-# Automoney - Simplified Budget and Wallet Management
+# 🚀 **Automoney - Simplified Budget and Wallet Management**
 
-## Overview
+![Automoney Logo](https://miro.medium.com/v2/resize:fit:4800/format:webp/1*n5mxR6uoQ4Rewx11DnS8Mw.png)
 
-Automoney is a mobile application designed to help individuals, especially those with dyscalculia, manage their finances autonomously and effortlessly. This project was undertaken as part of the Holberton School curriculum with the objective of providing an intuitive, accessible, and educational solution for users struggling with numbers.
+## 📝 **Introduction**
 
-Automoney combines simplicity with accessibility to assist users in day-to-day financial management, covering budgeting, payments, and verifying change received during transactions.
+Automoney is a mobile application designed to help individuals with dyscalculia manage their finances independently and effortlessly. This project was developed as part of the Holberton School program, aiming to provide an intuitive, accessible, and educational solution for users who face challenges with numbers.
 
-## Features
+![Automoney Visual](https://miro.medium.com/v2/resize:fit:640/format:webp/1*SOoMJdYycZQgOsY7wfy88w.png)
 
-- **Budget Management**: Create, adjust, and track budgets using a visual gauge to monitor current budget status in real-time.
-- **Virtual Wallet**: Manage available bills and coins via simple interactions, including voice commands.
-- **Payment Suggestions**: Provide users with the optimal combination of bills and coins for a given amount.
-- **Change Verification**: Ensure the correct change is received after purchases, with both visual and voice feedback.
-- **Transaction History**: Keep track of spending and incoming funds, including the total balance after each transaction.
-- **Increased Accessibility**: Voice recognition is utilized for entering amounts, managing budgets, or adding/removing funds, making the app accessible to those with numerical difficulties.
+🔗 **Link to Blog**: [Automoney Blog](https://medium.com/@8685/introducing-automoney-9569461c22f8)
 
-## Resources
+## 🎨 **Main Features**
 
-- **React Native Documentation**: [React Native](https://reactnative.dev/docs/getting-started)
-- **Firebase Documentation**: [Firebase](https://firebase.google.com/docs)
-- **Expo Documentation**: [Expo](https://docs.expo.dev/)
+- 💸 **Budget Planning**: Create, adjust, and monitor a budget using a visual gauge displaying the current budget status.
+- 💰 **Virtual Wallet**: Manage available notes and coins through simple interactions, including voice commands.
+- 💡 **Payment Suggestions**: Suggest the best combination of notes and coins for a given amount.
+- 💵 **Change Verification**: Ensure that change returned after a purchase is correct, with both visual and vocal feedback.
+- 📊 **Transaction History**: Track expenses and incoming funds, including the total balance after each transaction.
+- 🎙️ **Enhanced Accessibility**: Use voice recognition to enter amounts, manage the budget, or add/remove funds.
 
-## Technologies and Tools Used
+## 🚀 **Technologies Used**
 
-Automoney is built using modern technologies to ensure compatibility, scalability, and ease of use.
+- **React Native**: Cross-platform mobile development.
+- **Firebase**: Authentication, data storage, and real-time data access.
+- **Expo**: Simplifies development and deployment across various devices.
 
-### Frontend
+## 🛠️ **Installation**
 
-- **React Native**: Used for developing a cross-platform mobile application.
-- **Expo**: To streamline development and deployment on various devices.
+To install and run Automoney locally, follow the steps below:
 
-### Backend
-
-- **Firebase**: For user authentication, data storage, and real-time accessibility.
-
-### Database
-
-- **Firestore**: A NoSQL database provided by Firebase, used for storing user information, wallet details, and transaction history.
-
-## Architectural Diagram
-
-Automoney is designed to prioritize user interactions, data security, and accessibility, integrating Firebase to ensure data synchronization across all user devices.
-
-**Data Flow Overview**:
-
-1. **User**: Interacts with the frontend interface.
-2. **Frontend**: Sends requests to the backend via Firebase (authentication, data retrieval, etc.).
-3. **Backend (Firebase)**: Processes the request, accesses the Firestore database.
-4. **Database**: Stores data about users, budgets, transactions, etc.
-
-## Installation and Configuration
-
-Follow these steps to install and configure Automoney on your local machine:
-
-### Prerequisites
-
-- **Node.js** (version 14 or higher): Make sure Node.js is installed.
-- **Expo CLI**: Install Expo CLI globally:
-  ```bash
-  npm install -g expo-cli
-  ```
-- **Firebase Account**: Set up a Firebase account for authentication and database management.
-
-### Installation Steps
-
-1. **Clone the Repository**:
+1. **Clone the repository**:
 
    ```bash
    git clone <REPOSITORY_URL>
    cd Automoney
    ```
 
-2. **Install Dependencies**:
+2. **Install dependencies**:
 
    ```bash
    npm install
@@ -80,12 +45,12 @@ Follow these steps to install and configure Automoney on your local machine:
 3. **Configure Firebase**:
 
    - Create a project on [Firebase](https://firebase.google.com/).
-   - Set up authentication and Firestore database.
-   - Copy the Firebase configuration and add it to a `.env` file.
+   - Set up authentication and Firestore.
+   - Copy Firebase configuration details into a `.env` file.
 
-4. **Set Environment Variables**:
+4. **Environment Variables**:
 
-   - Create a `.env` file at the root with the following details:
+   - Create a `.env` file at the root of the project with the following:
      ```env
      API_KEY=<YOUR_FIREBASE_API_KEY>
      AUTH_DOMAIN=<YOUR_AUTH_DOMAIN>
@@ -95,65 +60,53 @@ Follow these steps to install and configure Automoney on your local machine:
      APP_ID=<YOUR_APP_ID>
      ```
 
-5. **Start the Application**:
+5. **Launch the application**:
    ```bash
    npm start
    ```
-   - Scan the QR code with the Expo Go app on your mobile device to preview the application.
+   - Scan the QR code with the Expo Go app on your phone to test the app.
 
-## Usage
+## 📱 **Usage**
 
-### Getting Started
+1. **Create an Account or Log In**:
 
-- **Create an Account**: Open the app and sign up with your email address.
-- **Manage Your Wallet**: Navigate to the wallet section to add or remove funds.
-- **Create a Budget**: Set budget goals and track progress with the budget gauge.
-- **Verify Change**: Use the change verification feature after making purchases.
+   - Open the app and create a new account using your email.
 
-### Application Features
+2. **Manage Your Wallet**:
 
-- **Budget Planning**: Users can set a budget, monitor progress in real-time, and make adjustments as needed.
-- **Virtual Wallet Management**: Easily add or remove coins and bills, with real-time balance updates.
-- **Payment Assistance**: Suggestions on how to pay using available coins and bills.
-- **Change Verification**: Check if the correct change is received after transactions.
-- **Accessibility**: Voice input helps users interact with the app seamlessly.
-- **Transaction Tracking**: A full history of all income and expenses is available, along with current wallet totals.
+   - Add or remove notes and coins using voice or text input.
 
-## Contribute
+3. **Plan and Track Budget**:
 
-Contributions are welcome! Here’s how you can contribute:
+   - Set a budget and keep track of your spending using real-time updates.
 
-1. **Fork the repository** on GitHub.
-2. **Clone the forked repository** to your local machine.
-   ```bash
-   git clone <FORKED_REPOSITORY_URL>
-   ```
-3. **Create a new branch** for your feature or bug fix:
-   ```bash
-   git checkout -b feature/NewFeature
-   ```
-4. **Commit your changes** and push to GitHub:
-   ```bash
-   git commit -m 'Add new feature'
-   git push origin feature/NewFeature
-   ```
-5. **Submit a Pull Request**: Open a pull request to propose your changes.
+4. **Verify Change and Payment Suggestions**:
+   - Check if change is correct after making a purchase and get suggestions for optimal payment.
 
-## Future Features
+## 🤝 **Contributing**
 
-- **Google Sign-In Integration**: Enable users to log in via Google accounts.
-- **Advanced Notifications**: Implement reminders for budget adjustments and spending goals.
-- **Multi-Language Support**: Expand accessibility to a broader user base by including multiple languages.
+Contributions are welcome! To contribute:
 
-## Contact
+1. **Fork the project**
+2. **Create a branch for your feature** (`git checkout -b feature/AmazingFeature`)
+3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)
+4. **Push to the branch** (`git push origin feature/AmazingFeature`)
+5. **Open a Pull Request**
 
-If you have any questions or suggestions, feel free to reach out:
+## 🔗 **Related Projects**
 
-- **Email**: 8685@holbertonsctudents.com
+- [Otonomy](https://www.autonomia.org/article/otonomy-pour-faciliter-la-gestion-de-son-portefeuille): The inspiration for Automoney, now discontinued.
 
-## License
+## 📜 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📬 **Contact**
+
+If you have any questions or suggestions, feel free to contact me at:
+
+- 📧 **Email**: 8685@holbertonstudents.com
+- 🔗 **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/catherine-jiguet-877a5591/)
 
 ---
 
